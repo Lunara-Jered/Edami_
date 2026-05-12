@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Explorez toutes les formations de l'enseignement supérieur au Gabon. Filtrez par type, ville ou diplôme.">
+  <title>Explorer les formations - Edami</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header>
+    <div class="container">
+      <a href="index.html" class="logo" aria-label="Edami - Accueil">
+        <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+          <rect width="40" height="40" rx="8" fill="#1a3c6e"/>
+          <path d="M8 28 L20 12 L32 28" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M14 28 L20 20 L26 28" stroke="#00a473" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span>Edami</span>
+      </a>
+      <nav>
+        <ul class="nav-links" id="nav-links">
+          <li><a href="index.html">Accueil</a></li>
+          <li><a href="explorer.html" class="active">Explorer</a></li>
+          <li><a href="a-propos.html">À propos</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </nav>
+      <div class="nav-actions">
+        <a href="sauvegarde.html" class="icon-btn" aria-label="Favoris sauvegardés">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          <span class="badge fav-badge">0</span>
+        </a>
+        <button class="hamburger" id="hamburger-btn" aria-label="Menu">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- En-tête de la page Explorer -->
+    <div class="page-header page-header-explorer">
+      <div class="container">
+        <h1>Explorer les formations</h1>
+        <p>Trouve l'établissement et la filière qui te correspondent.</p>
+        
+        <!-- Barre de recherche -->
+        <div class="search-bar search-bar-page">
+          <input type="text" id="search-input" placeholder="Recherche une école, une filière, une ville...">
+          <button aria-label="Rechercher">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <section class="section">
+      <div class="container">
+        <!-- Résultats -->
+        <div class="results-header">
+          <h2 class="section-title" id="result-count">Chargement...</h2>
+          <button class="btn btn-outline" id="reset-filters-btn" style="display: none;">
+            Réinitialiser les filtres
+          </button>
+        </div>
+        
+        <!-- Filtres -->
+        <div class="filters-bar">
+          <div class="filter-group">
+            <label for="filter-type">Type d'établissement</label>
+            <select id="filter-type">
+              <option value="">Tous les types</option>
+              <option value="Université publique">Université publique</option>
+              <option value="Grande école publique">Grande école publique</option>
+              <option value="École spécialisée publique">École spécialisée publique</option>
+            </select>
+          </div>
+          <div class="filter-group">
+            <label for="filter-ville">Ville</label>
+            <select id="filter-ville">
+              <option value="">Toutes les villes</option>
+              <option value="Libreville">Libreville</option>
+              <option value="Franceville">Franceville</option>
+            </select>
+          </div>
+          <div class="filter-group">
+            <label for="filter-diplome">Diplôme visé</label>
+            <select id="filter-diplome">
+              <option value="">Tous les diplômes</option>
+              <option value="BTS">BTS</option>
+              <option value="Technicien Supérieur">Technicien Supérieur</option>
+              <option value="Licence">Licence</option>
+              <option value="Licence Professionnelle">Licence Professionnelle</option>
+              <option value="Master">Master</option>
+              <option value="Doctorat">Doctorat</option>
+              <option value="CAPES">CAPES</option>
+              <option value="Certification">Certification</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Grille des écoles -->
+        <div class="ecoles-grid" id="ecoles-grid">
+          <div style="grid-column: 1/-1; text-align: center; padding: 40px;">
+            <p>Chargement des établissements...</p>
+          </div>
+        </div>
+        
+        <!-- Pagination (prête pour le futur) -->
+        <div class="pagination" id="pagination" style="display: none;">
+          <button class="btn btn-secondary" disabled>← Précédent</button>
+          <span class="page-info">Page 1 sur 1</span>
+          <button class="btn btn-secondary" disabled>Suivant →</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <div class="footer-bottom">
+        <p>© 2026 Edami - Plateforme d'orientation pour l'enseignement supérieur au Gabon.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/data-loader.js"></script>
+  <script src="js/favorites.js"></script>
+  <script src="js/search-filters.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
