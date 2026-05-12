@@ -9,19 +9,19 @@ const Edami = {
     FavoritesManager.init();
     FavoritesManager.updateBadge();
     
-    // Charger les données
-    const ecoles = await DataLoader.init();
-    console.log(`${ecoles.length} écoles disponibles`);
-    
     // Détecter la page
     const path = window.location.pathname;
     console.log('Page détectée:', path);
     
     if (path.includes('ecoles/ecole.html')) {
-      await this.initEcolePage();
+      await DataLoader.init();
+      this.initEcolePage();
+    } else if (path.includes('explorer.html')) {
+      await this.initExplorerPage();
     } else if (path.includes('sauvegarde.html')) {
-      await this.initFavoritesPage();
-    } else if (path.includes('index.html') || path === '/' || path.endsWith('/edami/')) {
+      await DataLoader.init();
+      this.initFavoritesPage();
+    } else if (path.includes('index.html') || path === '/' || path.endsWith('/')) {
       await this.initHomePage();
     }
     
@@ -30,11 +30,27 @@ const Edami = {
   },
 
   async initHomePage() {
-    console.log('Initialisation page accueil');
-    // Initialiser les filtres APRÈS le chargement des données
+    // Charger les données pour les statistiques
+    await DataLoader.init();
+    const ecoles = DataLoader.getEcoles();
+    
+    // Compter le nombre total de filières
+    const totalFilieres = ecoles.reduce((sum, e) => sum + (e.filières?.length || 0), 0);
+    
+    // Mettre à jour les stats
+    const ecolesCountEl = document.getElementById('ecoles-count');
+    const filieresCountEl = document.getElementById('filieres-count');
+    
+    if (ecolesCountEl) ecolesCountEl.textContent = ecoles.length;
+    if (filieresCountEl) filieresCountEl.textContent = totalFilieres;
+  },
+
+  async initExplorerPage() {
+    console.log('Initialisation page Explorer');
+    // Initialiser les filtres après chargement des données
     await SearchFilters.init();
     
-    // Restaurer les filtres depuis l'URL si présents
+    // Restaurer les filtres depuis l'URL
     const params = new URLSearchParams(window.location.search);
     const q = params.get('q');
     if (q) {
@@ -42,12 +58,46 @@ const Edami = {
       if (searchInput) {
         searchInput.value = q;
         SearchFilters.currentFilters.search = q;
-        SearchFilters.applyAndRender();
       }
+    }
+    
+    // Restaurer les autres filtres
+    ['type', 'ville', 'diplome'].forEach(filter => {
+      const value = params.get(filter);
+      if (value) {
+        const select = document.getElementById(`filter-${filter}`);
+        if (select) {
+          select.value = value;
+          SearchFilters.currentFilters[filter] = value;
+        }
+      }
+    });
+    
+    // Appliquer les filtres restaurés
+    SearchFilters.applyAndRender();
+    
+    // Bouton de réinitialisation
+    const resetBtn = document.getElementById('reset-filters-btn');
+    if (resetBtn) {
+      resetBtn.addEventListener('click', () => {
+        // Vider la recherche
+        const searchInput = document.getElementById('search-input');
+        if (searchInput) searchInput.value = '';
+        
+        // Réinitialiser les selects
+        ['filter-type', 'filter-ville', 'filter-diplome'].forEach(id => {
+          const select = document.getElementById(id);
+          if (select) select.value = '';
+        });
+        
+        // Réinitialiser les filtres
+        SearchFilters.currentFilters = { search: '', type: '', ville: '', diplome: '' };
+        SearchFilters.applyAndRender();
+      });
     }
   },
 
-  async initEcolePage() {
+  initEcolePage() {
     const params = new URLSearchParams(window.location.search);
     const id = params.get('id');
     console.log('Chargement école:', id);
@@ -61,7 +111,8 @@ const Edami = {
           <p style="color: var(--gray-600); margin-bottom: 24px;">
             L'établissement "${id}" n'existe pas dans notre base.
           </p>
-          <a href="../index.html" class="btn btn-primary">Retour à l'accueil</a>
+          <a href="../explorer.html" class="btn btn-primary">Explorer les écoles</a>
+          <a href="../index.html" class="btn btn-secondary" style="margin-left: 8px;">Retour à l'accueil</a>
         </div>
       `;
       return;
@@ -73,7 +124,6 @@ const Edami = {
   renderEcolePage(ecole) {
     document.title = `${ecole.nom} - Edami`;
     
-    // Méthode sécurisée pour définir le contenu
     const setText = (id, text) => {
       const el = document.getElementById(id);
       if (el) el.textContent = text || 'Non communiqué';
@@ -157,7 +207,6 @@ const Edami = {
   },
 
   async initFavoritesPage() {
-    await DataLoader.init();
     const favIds = FavoritesManager.getFavorites();
     const ecoles = DataLoader.getEcoles().filter(e => favIds.includes(e.id));
     
@@ -171,7 +220,7 @@ const Edami = {
             <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
           </svg>
           <p style="font-size: 1.1rem; color: var(--gray-600); margin-bottom: 16px;">Aucun favori sauvegardé.</p>
-          <a href="index.html" class="btn btn-primary">Explorer les écoles</a>
+          <a href="explorer.html" class="btn btn-primary">Explorer les écoles</a>
         </div>
       `;
       return;
@@ -192,7 +241,6 @@ const Edami = {
         hamburger.setAttribute('aria-expanded', isOpen);
       });
       
-      // Fermer le menu au clic sur un lien
       navLinks.querySelectorAll('a').forEach(link => {
         link.addEventListener('click', () => {
           navLinks.classList.remove('open');
@@ -207,14 +255,13 @@ const Edami = {
     document.querySelectorAll('.nav-links a').forEach(link => {
       link.classList.remove('active');
       const href = link.getAttribute('href');
-      if (href && path.includes(href.replace(/\.\.\//g, '').replace('./', ''))) {
+      if (href && path.includes(href.replace(/\.\.\//g, ''))) {
         link.classList.add('active');
       }
     });
   }
 };
 
-// Démarrer l'application
 document.addEventListener('DOMContentLoaded', () => {
   console.log('📄 DOM prêt, démarrage Edami...');
   Edami.init().catch(err => console.error('Erreur Edami:', err));
