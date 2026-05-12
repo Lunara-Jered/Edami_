@@ -24,15 +24,15 @@
       <nav>
         <ul class="nav-links" id="nav-links">
           <li><a href="index.html" class="active">Accueil</a></li>
-          <li><a href="#explorer">Explorer</a></li>
+          <li><a href="explorer.html">Explorer</a></li>
           <li><a href="a-propos.html">À propos</a></li>
           <li><a href="contact.html">Contact</a></li>
         </ul>
       </nav>
       <div class="nav-actions">
-        <button class="icon-btn search-trigger" aria-label="Rechercher" onclick="document.getElementById('search-input').focus()">
+        <a href="explorer.html" class="icon-btn search-trigger" aria-label="Rechercher">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-        </button>
+        </a>
         <a href="sauvegarde.html" class="icon-btn" aria-label="Favoris sauvegardés">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
           <span class="badge fav-badge">0</span>
@@ -50,17 +50,35 @@
       <div class="container">
         <h1>Trouve la formation qui te correspond au Gabon</h1>
         <p>Explore, compare et choisis parmi les universités, grandes écoles et instituts supérieurs du Gabon.</p>
-        <div class="search-bar">
-          <input type="text" id="search-input" placeholder="Recherche une école, une filière, une ville...">
-          <button aria-label="Rechercher">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-          </button>
+        <div class="hero-actions">
+          <a href="explorer.html" class="btn btn-hero">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            Explorer les formations
+          </a>
+          <a href="explorer.html" class="btn btn-hero-secondary">
+            Voir toutes les écoles
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+        </div>
+        <div class="hero-stats">
+          <div class="stat-item">
+            <span class="stat-number" id="ecoles-count">3</span>
+            <span class="stat-label">Établissements</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-number" id="filieres-count">10</span>
+            <span class="stat-label">Filières</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-number">2</span>
+            <span class="stat-label">Villes</span>
+          </div>
         </div>
       </div>
     </section>
 
     <!-- Pourquoi Edami ? -->
-    <section class="section" id="explorer">
+    <section class="section" id="pourquoi">
       <div class="container">
         <h2 class="section-title">Pourquoi Edami ?</h2>
         <p class="section-subtitle">La première plateforme gabonaise qui centralise l'information sur l'enseignement supérieur.</p>
@@ -90,45 +108,33 @@
       </div>
     </section>
 
-    <!-- Filtres et Résultats -->
+    <!-- Comment ça marche -->
     <section class="section" style="background: var(--white);">
       <div class="container">
-        <h2 class="section-title" id="result-count">3 école(s) trouvée(s)</h2>
-        
-        <div class="filters-bar">
-          <div class="filter-group">
-            <label for="filter-type">Type d'établissement</label>
-            <select id="filter-type">
-              <option value="">Tous</option>
-              <option value="Université publique">Université publique</option>
-              <option value="Grande école publique">Grande école publique</option>
-              <option value="École spécialisée publique">École spécialisée publique</option>
-            </select>
+        <h2 class="section-title">Comment ça marche ?</h2>
+        <p class="section-subtitle">Trois étapes simples pour trouver ta voie.</p>
+        <div class="steps-grid">
+          <div class="step-card">
+            <div class="step-number">1</div>
+            <h3>Recherche</h3>
+            <p>Utilise la barre de recherche ou les filtres pour trouver les formations qui t'intéressent.</p>
           </div>
-          <div class="filter-group">
-            <label for="filter-ville">Ville</label>
-            <select id="filter-ville">
-              <option value="">Toutes</option>
-              <option value="Libreville">Libreville</option>
-              <option value="Franceville">Franceville</option>
-            </select>
+          <div class="step-card">
+            <div class="step-number">2</div>
+            <h3>Compare</h3>
+            <p>Consulte les fiches détaillées : programmes, tarifs, dates de concours, débouchés.</p>
           </div>
-          <div class="filter-group">
-            <label for="filter-diplome">Diplôme visé</label>
-            <select id="filter-diplome">
-              <option value="">Tous</option>
-              <option value="BTS">BTS</option>
-              <option value="Licence">Licence</option>
-              <option value="Licence Professionnelle">Licence Pro</option>
-              <option value="Master">Master</option>
-              <option value="Doctorat">Doctorat</option>
-              <option value="CAPES">CAPES</option>
-            </select>
+          <div class="step-card">
+            <div class="step-number">3</div>
+            <h3>Prépare-toi</h3>
+            <p>Sauvegarde tes favoris, note les dates importantes et prépare tes dossiers de candidature.</p>
           </div>
         </div>
-
-        <div class="ecoles-grid" id="ecoles-grid">
-          <!-- Chargement dynamique -->
+        <div style="text-align: center; margin-top: 40px;">
+          <a href="explorer.html" class="btn btn-primary" style="font-size: 1.1rem; padding: 16px 40px;">
+            Commencer à explorer
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
         </div>
       </div>
     </section>
@@ -147,7 +153,7 @@
         <div class="footer-col">
           <h4>Explorer</h4>
           <ul>
-            <li><a href="index.html#explorer">Toutes les écoles</a></li>
+            <li><a href="explorer.html">Toutes les écoles</a></li>
             <li><a href="sauvegarde.html">Mes favoris</a></li>
           </ul>
         </div>
@@ -174,7 +180,6 @@
 
   <script src="js/data-loader.js"></script>
   <script src="js/favorites.js"></script>
-  <script src="js/search-filters.js"></script>
   <script src="js/main.js"></script>
 </body>
 </html>
