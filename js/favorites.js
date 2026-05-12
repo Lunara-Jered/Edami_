@@ -3,44 +3,57 @@
  */
 const FavoritesManager = {
   STORAGE_KEY: 'edami_favorites',
-  
+
   init() {
     if (!localStorage.getItem(this.STORAGE_KEY)) {
       localStorage.setItem(this.STORAGE_KEY, JSON.stringify([]));
     }
   },
-  
+
   getFavorites() {
-    return JSON.parse(localStorage.getItem(this.STORAGE_KEY) || '[]');
+    try {
+      return JSON.parse(localStorage.getItem(this.STORAGE_KEY) || '[]');
+    } catch (e) {
+      return [];
+    }
   },
-  
+
   saveFavorites(favorites) {
     localStorage.setItem(this.STORAGE_KEY, JSON.stringify(favorites));
   },
-  
+
   isFavorite(ecoleId) {
     return this.getFavorites().includes(ecoleId);
   },
-  
-  toggleFavorite(ecoleId) {
+
+  addFavorite(ecoleId) {
     const favorites = this.getFavorites();
-    const index = favorites.indexOf(ecoleId);
-    
-    if (index > -1) {
-      favorites.splice(index, 1);
-    } else {
+    if (!favorites.includes(ecoleId)) {
       favorites.push(ecoleId);
+      this.saveFavorites(favorites);
     }
-    
+    this.updateBadge();
+  },
+
+  removeFavorite(ecoleId) {
+    const favorites = this.getFavorites().filter(id => id !== ecoleId);
     this.saveFavorites(favorites);
     this.updateBadge();
-    return !this.isFavorite(ecoleId);
   },
-  
+
+  toggleFavorite(ecoleId) {
+    if (this.isFavorite(ecoleId)) {
+      this.removeFavorite(ecoleId);
+      return false;
+    } else {
+      this.addFavorite(ecoleId);
+      return true;
+    }
+  },
+
   updateBadge() {
-    const badges = document.querySelectorAll('.fav-badge');
     const count = this.getFavorites().length;
-    badges.forEach(badge => {
+    document.querySelectorAll('.fav-badge').forEach(badge => {
       badge.textContent = count;
       badge.style.display = count > 0 ? 'flex' : 'none';
     });
