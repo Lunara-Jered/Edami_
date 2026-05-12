@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Découvrez les formations, conditions d'admission et actualités de cet établissement supérieur au Gabon.">
+  <title>Fiche établissement - Edami</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <header>
+    <div class="container">
+      <a href="../index.html" class="logo" aria-label="Edami - Accueil">
+        <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+          <rect width="40" height="40" rx="8" fill="#1a3c6e"/>
+          <path d="M8 28 L20 12 L32 28" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M14 28 L20 20 L26 28" stroke="#00a473" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span>Edami</span>
+      </a>
+      <nav>
+        <ul class="nav-links" id="nav-links">
+          <li><a href="../index.html">Accueil</a></li>
+          <li><a href="../index.html#explorer">Explorer</a></li>
+          <li><a href="../a-propos.html">À propos</a></li>
+          <li><a href="../contact.html">Contact</a></li>
+        </ul>
+      </nav>
+      <div class="nav-actions">
+        <a href="../sauvegarde.html" class="icon-btn" aria-label="Favoris sauvegardés">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          <span class="badge fav-badge">0</span>
+        </a>
+        <button class="hamburger" id="hamburger-btn" aria-label="Menu">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- En-tête de l'école -->
+    <div class="ecole-hero">
+      <div class="container">
+        <div class="ecole-hero-content">
+          <img id="ecole-logo" src="" alt="" class="ecole-hero-logo">
+          <div class="ecole-hero-info">
+            <h1 id="ecole-nom"></h1>
+            <div class="ecole-meta">
+              <span class="badge-info" id="ecole-type"></span>
+              <span class="badge-info" id="ecole-statut"></span>
+              <span class="badge-info" id="ecole-ville"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+      <!-- Vue d'ensemble -->
+      <section class="ecole-section">
+        <h2>Vue d'ensemble</h2>
+        <p id="ecole-description"></p>
+        <button class="btn btn-outline" id="btn-fav-ecole" style="margin-top: 16px;">
+          🤍 Sauvegarder cette école
+        </button>
+      </section>
+
+      <!-- Filières & Formations -->
+      <section class="ecole-section">
+        <h2>Filières & Formations</h2>
+        <div class="filieres-grid" id="filieres-grid"></div>
+      </section>
+
+      <!-- Admission & Concours -->
+      <section class="ecole-section">
+        <h2>Admission & Concours</h2>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
+          <div>
+            <strong>Prochain concours :</strong> <span id="concours-date"></span>
+          </div>
+          <div>
+            <strong>Période d'inscription :</strong> <span id="concours-inscription"></span>
+          </div>
+          <div>
+            <strong>Voie d'accès :</strong> <span id="concours-voie"></span>
+          </div>
+        </div>
+        <div style="margin-top: 20px;">
+          <strong>Conditions :</strong>
+          <ul id="concours-conditions" style="margin-top: 8px; padding-left: 20px;"></ul>
+        </div>
+      </section>
+
+      <!-- Tarifs & Financement -->
+      <section class="ecole-section">
+        <h2>Tarifs & Financement</h2>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px;">
+          <div>
+            <strong>Frais d'inscription :</strong> <span id="tarifs-inscription"></span>
+          </div>
+          <div>
+            <strong>Frais de scolarité :</strong> <span id="tarifs-scolarite"></span>
+          </div>
+        </div>
+        <p id="tarifs-bourses" style="margin-top: 16px; color: var(--secondary); font-weight: 500;"></p>
+      </section>
+
+      <!-- Contact -->
+      <section class="ecole-section">
+        <h2>Contact</h2>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px;">
+          <div><strong>Téléphone :</strong> <span id="contact-tel"></span></div>
+          <div><strong>Email :</strong> <span id="contact-email"></span></div>
+          <div><strong>Adresse :</strong> <span id="contact-adresse"></span></div>
+        </div>
+      </section>
+
+      <!-- Actualités -->
+      <section class="ecole-section">
+        <h2>Actualités</h2>
+        <div id="actualites-list"></div>
+      </section>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <div class="footer-bottom">
+        <p>© 2026 Edami - Plateforme d'orientation pour l'enseignement supérieur au Gabon.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../js/data-loader.js"></script>
+  <script src="../js/favorites.js"></script>
+  <script src="../js/search-filters.js"></script>
+  <script src="../js/main.js"></script>
+</body>
+</html>
