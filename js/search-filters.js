@@ -79,13 +79,26 @@ const SearchFilters = {
     });
   },
 
-  applyAndRender() {
+  // Dans la méthode applyAndRender, ajouter la gestion du bouton reset
+applyAndRender() {
     const filtered = DataLoader.applyFilters(this.currentFilters);
     this.renderCards(filtered);
     this.renderResultCount(filtered.length);
-    
-    // Mettre à jour l'URL pour partage (optionnel)
     this.updateURL();
+    this.toggleResetButton();
+  },
+
+  // Nouvelle méthode
+  toggleResetButton() {
+    const resetBtn = document.getElementById('reset-filters-btn');
+    if (!resetBtn) return;
+    
+    const hasFilters = this.currentFilters.search || 
+                       this.currentFilters.type || 
+                       this.currentFilters.ville || 
+                       this.currentFilters.diplome;
+    
+    resetBtn.style.display = hasFilters ? 'inline-flex' : 'none';
   },
 
   updateURL() {
