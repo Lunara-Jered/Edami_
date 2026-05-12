@@ -1,51 +1,66 @@
 /**
- * Main - Script principal de l'application Edami
- * Point d'entrée pour toutes les pages
+ * Main - Point d'entrée de l'application Edami
  */
 const Edami = {
   async init() {
-    // Initialiser le gestionnaire de favoris
+    console.log('🚀 Edami initialisation...');
+    
+    // Initialiser les favoris
     FavoritesManager.init();
     FavoritesManager.updateBadge();
     
     // Charger les données
     const ecoles = await DataLoader.init();
+    console.log(`${ecoles.length} écoles disponibles`);
     
-    // Détecter la page courante
+    // Détecter la page
     const path = window.location.pathname;
+    console.log('Page détectée:', path);
     
     if (path.includes('ecoles/ecole.html')) {
-      this.initEcolePage();
+      await this.initEcolePage();
     } else if (path.includes('sauvegarde.html')) {
-      this.initFavoritesPage();
-    } else if (path.includes('index.html') || path === '/' || path.endsWith('/')) {
-      this.initHomePage();
+      await this.initFavoritesPage();
+    } else if (path.includes('index.html') || path === '/' || path.endsWith('/edami/')) {
+      await this.initHomePage();
     }
     
     this.initMobileMenu();
     this.setActiveNav();
   },
-  
-  initHomePage() {
-    SearchFilters.init();
+
+  async initHomePage() {
+    console.log('Initialisation page accueil');
+    // Initialiser les filtres APRÈS le chargement des données
+    await SearchFilters.init();
     
-    // Rendu initial
-    const ecoles = DataLoader.getEcoles();
-    SearchFilters.renderCards(ecoles);
-    SearchFilters.renderResultCount(ecoles.length);
+    // Restaurer les filtres depuis l'URL si présents
+    const params = new URLSearchParams(window.location.search);
+    const q = params.get('q');
+    if (q) {
+      const searchInput = document.getElementById('search-input');
+      if (searchInput) {
+        searchInput.value = q;
+        SearchFilters.currentFilters.search = q;
+        SearchFilters.applyAndRender();
+      }
+    }
   },
-  
-  initEcolePage() {
+
+  async initEcolePage() {
     const params = new URLSearchParams(window.location.search);
     const id = params.get('id');
+    console.log('Chargement école:', id);
     
     const ecole = DataLoader.getEcoleById(id);
     
     if (!ecole) {
       document.querySelector('.container').innerHTML = `
-        <div class="ecole-not-found" style="text-align: center; padding: 80px 20px;">
+        <div style="text-align: center; padding: 80px 20px;">
           <h1 style="color: var(--primary); margin-bottom: 16px;">École non trouvée</h1>
-          <p style="color: var(--gray-600); margin-bottom: 24px;">L'établissement que vous recherchez n'existe pas ou a été déplacé.</p>
+          <p style="color: var(--gray-600); margin-bottom: 24px;">
+            L'établissement "${id}" n'existe pas dans notre base.
+          </p>
           <a href="../index.html" class="btn btn-primary">Retour à l'accueil</a>
         </div>
       `;
@@ -54,26 +69,36 @@ const Edami = {
     
     this.renderEcolePage(ecole);
   },
-  
+
   renderEcolePage(ecole) {
-    // Mettre à jour le titre et la description
     document.title = `${ecole.nom} - Edami`;
-    const metaDesc = document.querySelector('meta[name="description"]');
-    if (metaDesc) metaDesc.setAttribute('content', ecole.description_courte || `Découvrez ${ecole.nom} : formations, conditions d'admission, tarifs et actualités.`);
     
-    // Remplir les sections
-    document.getElementById('ecole-nom').textContent = ecole.nom;
-    document.getElementById('ecole-logo').src = ecole.logo;
-    document.getElementById('ecole-logo').alt = `Logo ${ecole.nom}`;
-    document.getElementById('ecole-type').textContent = ecole.type;
-    document.getElementById('ecole-statut').textContent = ecole.statut;
-    document.getElementById('ecole-ville').textContent = ecole.ville;
-    document.getElementById('ecole-description').textContent = ecole.description;
+    // Méthode sécurisée pour définir le contenu
+    const setText = (id, text) => {
+      const el = document.getElementById(id);
+      if (el) el.textContent = text || 'Non communiqué';
+    };
     
-    // Filieres
-    const filieresGrid = document.getElementById('filieres-grid');
-    if (ecole.filières && ecole.filières.length > 0) {
-      filieresGrid.innerHTML = ecole.filières.map(f => `
+    const setHTML = (id, html) => {
+      const el = document.getElementById(id);
+      if (el) el.innerHTML = html || '';
+    };
+    
+    const setSrc = (id, src) => {
+      const el = document.getElementById(id);
+      if (el) el.src = src || '';
+    };
+    
+    setText('ecole-nom', ecole.nom);
+    setSrc('ecole-logo', ecole.logo);
+    setText('ecole-type', ecole.type);
+    setText('ecole-statut', ecole.statut);
+    setText('ecole-ville', ecole.ville);
+    setText('ecole-description', ecole.description || ecole.description_courte);
+    
+    // Filières
+    if (ecole.filières?.length) {
+      setHTML('filieres-grid', ecole.filières.map(f => `
         <div class="filiere-card">
           <h3>${f.nom}</h3>
           <div class="filiere-details">
@@ -81,81 +106,81 @@ const Edami = {
             <span class="filiere-tag">⏱ ${f.duree}</span>
             <span class="filiere-tag">📍 ${f.mode}</span>
           </div>
-          <p>${f.description}</p>
+          <p>${f.description || ''}</p>
           <span class="filiere-tag" style="margin-top: 8px;">🏷 ${f.domaine}</span>
         </div>
-      `).join('');
-    } else {
-      filieresGrid.innerHTML = '<p>Information sur les filières à venir.</p>';
+      `).join(''));
     }
     
     // Concours
-    document.getElementById('concours-date').textContent = ecole.concours?.date_prochain || 'Non communiqué';
-    document.getElementById('concours-inscription').textContent = ecole.concours?.periode_inscription || 'Non communiqué';
-    document.getElementById('concours-voie').textContent = ecole.concours?.voie || 'Non précisé';
-    
-    const conditionsList = document.getElementById('concours-conditions');
+    setText('concours-date', ecole.concours?.date_prochain);
+    setText('concours-inscription', ecole.concours?.periode_inscription);
+    setText('concours-voie', ecole.concours?.voie);
     if (ecole.concours?.conditions) {
-      conditionsList.innerHTML = ecole.concours.conditions.map(c => `<li>${c}</li>`).join('');
+      setHTML('concours-conditions', ecole.concours.conditions.map(c => `<li>${c}</li>`).join(''));
     }
     
     // Tarifs
-    document.getElementById('tarifs-inscription').textContent = ecole.tarifs?.frais_inscription || 'Non communiqué';
-    document.getElementById('tarifs-scolarite').textContent = ecole.tarifs?.frais_scolarite || 'Non communiqué';
-    document.getElementById('tarifs-bourses').textContent = ecole.tarifs?.details || '';
+    setText('tarifs-inscription', ecole.tarifs?.frais_inscription);
+    setText('tarifs-scolarite', ecole.tarifs?.frais_scolarite);
+    setText('tarifs-bourses', ecole.tarifs?.details || '');
     
     // Actualités
-    const actusDiv = document.getElementById('actualites-list');
-    if (ecole.actualites && ecole.actualites.length > 0) {
-      actusDiv.innerHTML = ecole.actualites.map(a => `
+    if (ecole.actualites?.length) {
+      setHTML('actualites-list', ecole.actualites.map(a => `
         <article class="actualite-item">
           <div class="actualite-date">${new Date(a.date).toLocaleDateString('fr-FR', { year: 'numeric', month: 'long', day: 'numeric' })}</div>
           <h3>${a.titre}</h3>
           <p>${a.contenu}</p>
         </article>
-      `).join('');
-    } else {
-      actusDiv.innerHTML = '<p>Aucune actualité disponible pour le moment.</p>';
+      `).join(''));
     }
     
     // Contact
-    document.getElementById('contact-tel').textContent = ecole.contact?.telephone || 'Non communiqué';
-    document.getElementById('contact-email').textContent = ecole.contact?.email || 'Non communiqué';
-    document.getElementById('contact-adresse').textContent = ecole.contact?.adresse || 'Non communiqué';
+    setText('contact-tel', ecole.contact?.telephone);
+    setText('contact-email', ecole.contact?.email);
+    setText('contact-adresse', ecole.contact?.adresse);
     
-    // Bouton favoris
+    // Bouton favori
     const btnFav = document.getElementById('btn-fav-ecole');
-    const isFav = FavoritesManager.isFavorite(ecole.id);
-    btnFav.classList.toggle('active', isFav);
-    btnFav.innerHTML = isFav ? '❤️ Retiré des favoris' : '🤍 Sauvegarder cette école';
-    
-    btnFav.addEventListener('click', () => {
-      const nowFav = FavoritesManager.toggleFavorite(ecole.id);
-      btnFav.classList.toggle('active', nowFav);
-      btnFav.innerHTML = nowFav ? '❤️ Retiré des favoris' : '🤍 Sauvegarder cette école';
-    });
+    if (btnFav) {
+      const isFav = FavoritesManager.isFavorite(ecole.id);
+      btnFav.classList.toggle('active', isFav);
+      btnFav.innerHTML = isFav ? '❤️ Retiré des favoris' : '🤍 Sauvegarder cette école';
+      
+      btnFav.addEventListener('click', () => {
+        const nowFav = FavoritesManager.toggleFavorite(ecole.id);
+        btnFav.classList.toggle('active', nowFav);
+        btnFav.innerHTML = nowFav ? '❤️ Retiré des favoris' : '🤍 Sauvegarder cette école';
+      });
+    }
   },
-  
-  initFavoritesPage() {
-    const favoritesIds = FavoritesManager.getFavorites();
-    const ecoles = DataLoader.getEcoles().filter(e => favoritesIds.includes(e.id));
+
+  async initFavoritesPage() {
+    await DataLoader.init();
+    const favIds = FavoritesManager.getFavorites();
+    const ecoles = DataLoader.getEcoles().filter(e => favIds.includes(e.id));
     
     const container = document.getElementById('favorites-list');
+    if (!container) return;
     
     if (ecoles.length === 0) {
       container.innerHTML = `
-        <div style="text-align: center; padding: 40px;">
-          <p style="font-size: 1.1rem; color: var(--gray-600);">Aucun favori sauvegardé.</p>
-          <a href="index.html" class="btn btn-primary" style="margin-top: 16px;">Explorer les écoles</a>
+        <div style="grid-column: 1/-1; text-align: center; padding: 48px 20px;">
+          <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#ccc" stroke-width="1.5" style="margin-bottom: 16px;">
+            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+          </svg>
+          <p style="font-size: 1.1rem; color: var(--gray-600); margin-bottom: 16px;">Aucun favori sauvegardé.</p>
+          <a href="index.html" class="btn btn-primary">Explorer les écoles</a>
         </div>
       `;
       return;
     }
     
-    container.innerHTML = ecoles.map(ecole => SearchFilters.createCardHTML(ecole)).join('');
+    container.innerHTML = ecoles.map(e => SearchFilters.createCardHTML(e)).join('');
     SearchFilters.attachCardEvents();
   },
-  
+
   initMobileMenu() {
     const hamburger = document.getElementById('hamburger-btn');
     const navLinks = document.getElementById('nav-links');
@@ -163,22 +188,34 @@ const Edami = {
     if (hamburger && navLinks) {
       hamburger.addEventListener('click', () => {
         navLinks.classList.toggle('open');
+        const isOpen = navLinks.classList.contains('open');
+        hamburger.setAttribute('aria-expanded', isOpen);
+      });
+      
+      // Fermer le menu au clic sur un lien
+      navLinks.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => {
+          navLinks.classList.remove('open');
+          hamburger.setAttribute('aria-expanded', 'false');
+        });
       });
     }
   },
-  
+
   setActiveNav() {
     const path = window.location.pathname;
-    const links = document.querySelectorAll('.nav-links a');
-    
-    links.forEach(link => {
+    document.querySelectorAll('.nav-links a').forEach(link => {
       link.classList.remove('active');
-      if (link.getAttribute('href') && path.includes(link.getAttribute('href').replace('./', ''))) {
+      const href = link.getAttribute('href');
+      if (href && path.includes(href.replace(/\.\.\//g, '').replace('./', ''))) {
         link.classList.add('active');
       }
     });
   }
 };
 
-// Démarrer quand le DOM est prêt
-document.addEventListener('DOMContentLoaded', () => Edami.init());
+// Démarrer l'application
+document.addEventListener('DOMContentLoaded', () => {
+  console.log('📄 DOM prêt, démarrage Edami...');
+  Edami.init().catch(err => console.error('Erreur Edami:', err));
+});
