@@ -1,6 +1,5 @@
 /**
  * SearchFilters - Gestion robuste de la recherche et des filtres
- * Correction : initialisation après chargement des données
  */
 const SearchFilters = {
   currentFilters: {
@@ -11,16 +10,13 @@ const SearchFilters = {
   },
 
   async init() {
-    // Attendre que les données soient chargées avant d'initialiser
     console.log('Initialisation des filtres...');
     await DataLoader.init();
     console.log('✅ Données prêtes, configuration des écouteurs');
     
     this.bindSearchEvents();
     this.bindFilterEvents();
-    
-    // Rendu initial
-    this.applyAndRender();
+    this.toggleResetButton();
   },
 
   bindSearchEvents() {
@@ -32,16 +28,13 @@ const SearchFilters = {
       return;
     }
 
-    // Recherche en temps réel avec debounce
     const handleSearch = this.debounce(() => {
       this.currentFilters.search = searchInput.value.trim();
-      console.log('Recherche déclenchée:', this.currentFilters.search);
       this.applyAndRender();
     }, 300);
 
     searchInput.addEventListener('input', handleSearch);
     
-    // Recherche au clic sur le bouton
     if (searchBtn) {
       searchBtn.addEventListener('click', (e) => {
         e.preventDefault();
@@ -50,7 +43,6 @@ const SearchFilters = {
       });
     }
     
-    // Recherche avec la touche Entrée
     searchInput.addEventListener('keydown', (e) => {
       if (e.key === 'Enter') {
         e.preventDefault();
@@ -61,9 +53,7 @@ const SearchFilters = {
   },
 
   bindFilterEvents() {
-    const filterIds = ['filter-type', 'filter-ville', 'filter-diplome'];
-    
-    filterIds.forEach(id => {
+    ['filter-type', 'filter-ville', 'filter-diplome'].forEach(id => {
       const select = document.getElementById(id);
       if (!select) {
         console.warn(`Filtre ${id} non trouvé`);
@@ -73,14 +63,12 @@ const SearchFilters = {
       select.addEventListener('change', () => {
         const filterKey = id.replace('filter-', '');
         this.currentFilters[filterKey] = select.value;
-        console.log(`Filtre ${filterKey} changé:`, select.value);
         this.applyAndRender();
       });
     });
   },
 
-  // Dans la méthode applyAndRender, ajouter la gestion du bouton reset
-applyAndRender() {
+  applyAndRender() {
     const filtered = DataLoader.applyFilters(this.currentFilters);
     this.renderCards(filtered);
     this.renderResultCount(filtered.length);
@@ -88,7 +76,6 @@ applyAndRender() {
     this.toggleResetButton();
   },
 
-  // Nouvelle méthode
   toggleResetButton() {
     const resetBtn = document.getElementById('reset-filters-btn');
     if (!resetBtn) return;
@@ -126,7 +113,8 @@ applyAndRender() {
             <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
           </svg>
           <p style="font-size: 1.1rem; color: var(--gray-600); margin-bottom: 8px;">
-            Aucune école trouvée pour "<strong>${this.currentFilters.search}</strong>"
+            Aucune école trouvée
+            ${this.currentFilters.search ? `pour "<strong>${this.currentFilters.search}</strong>"` : ''}
           </p>
           <p style="color: var(--gray-600);">
             Essayez de modifier vos termes de recherche ou vos filtres.
@@ -146,7 +134,6 @@ applyAndRender() {
     const tarifsMin = ecole.tarifs?.frais_scolarite || 'Voir détails';
     const nbFilieres = ecole.filières?.length || 0;
     
-    // Générer un placeholder SVG si le logo n'est pas disponible
     const logoSrc = ecole.logo || `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='56' viewBox='0 0 56 56'%3E%3Crect width='56' height='56' rx='8' fill='%231a3c6e'/%3E%3Ctext x='28' y='36' text-anchor='middle' fill='white' font-family='sans-serif' font-size='20' font-weight='bold'%3E${ecole.acronyme || ecole.nom.substring(0,2)}%3C/text%3E%3C/svg%3E`;
 
     return `
@@ -201,7 +188,6 @@ applyAndRender() {
 
   attachCardEvents() {
     document.querySelectorAll('.btn-fav').forEach(btn => {
-      // Éviter les doublons d'écouteurs
       const newBtn = btn.cloneNode(true);
       btn.parentNode.replaceChild(newBtn, btn);
       
@@ -212,7 +198,6 @@ applyAndRender() {
         const id = newBtn.dataset.ecoleId;
         if (!id) return;
         
-        // Toggle favori
         const isNowFav = !FavoritesManager.isFavorite(id);
         if (isNowFav) {
           FavoritesManager.addFavorite(id);
