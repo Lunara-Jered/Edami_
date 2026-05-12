@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Contactez l'équipe Edami, consultez notre FAQ ou référencez votre établissement.">
+  <title>Contact - Edami</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header>
+    <div class="container">
+      <a href="index.html" class="logo" aria-label="Edami - Accueil">
+        <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+          <rect width="40" height="40" rx="8" fill="#1a3c6e"/>
+          <path d="M8 28 L20 12 L32 28" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M14 28 L20 20 L26 28" stroke="#00a473" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span>Edami</span>
+      </a>
+      <nav>
+        <ul class="nav-links" id="nav-links">
+          <li><a href="index.html">Accueil</a></li>
+          <li><a href="index.html#explorer">Explorer</a></li>
+          <li><a href="a-propos.html">À propos</a></li>
+          <li><a href="contact.html" class="active">Contact</a></li>
+        </ul>
+      </nav>
+      <div class="nav-actions">
+        <a href="sauvegarde.html" class="icon-btn" aria-label="Favoris sauvegardés">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          <span class="badge fav-badge">0</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="page-header">
+      <h1>Contactez-nous</h1>
+      <p>Une question ? Besoin d'aide ? Nous sommes là.</p>
+    </div>
+    
+    <section class="page-content">
+      <div class="container">
+        <div class="content-block" id="faq">
+          <h2>Foire Aux Questions</h2>
+          
+          <div class="faq-item">
+            <p class="faq-question">Comment sont sélectionnées les écoles présentées ?</p>
+            <p class="faq-answer">Nous référençons tous les établissements d'enseignement supérieur reconnus par l'État gabonais. Si votre établissement n'apparaît pas, utilisez notre formulaire de référencement.</p>
+          </div>
+          
+          <div class="faq-item">
+            <p class="faq-question">Les informations sont-elles à jour ?</p>
+            <p class="faq-answer">Nous mettons à jour régulièrement nos données en lien avec les établissements. Les dates de concours et tarifs sont ceux communiqués officiellement. Vérifiez toujours auprès de l'établissement avant de candidater.</p>
+          </div>
+          
+          <div class="faq-item">
+            <p class="faq-question">Puis-je postuler directement depuis Edami ?</p>
+            <p class="faq-answer">Non, Edami est une plateforme d'information et d'orientation. Les candidatures se font directement auprès des établissements selon leurs modalités propres.</p>
+          </div>
+        </div>
+
+        <div class="content-block" id="referencement">
+          <h2>Référencer votre établissement</h2>
+          <p style="margin-bottom: 24px;">Vous dirigez un établissement d'enseignement supérieur au Gabon ? Remplissez ce formulaire pour apparaître sur Edami.</p>
+          
+          <form id="referencement-form">
+            <div class="form-group">
+              <label for="nom-etablissement">Nom de l'établissement *</label>
+              <input type="text" id="nom-etablissement" required>
+            </div>
+            <div class="form-group">
+              <label for="email-contact">Email de contact *</label>
+              <input type="email" id="email-contact" required>
+            </div>
+            <div class="form-group">
+              <label for="site-web">Site web</label>
+              <input type="url" id="site-web">
+            </div>
+            <div class="form-group">
+              <label for="message-ref">Présentation et filières proposées</label>
+              <textarea id="message-ref" rows="4"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Envoyer la demande</button>
+          </form>
+        </div>
+
+        <div class="content-block">
+          <h2>Nous écrire</h2>
+          <form id="contact-form">
+            <div class="form-group">
+              <label for="nom">Votre nom *</label>
+              <input type="text" id="nom" required>
+            </div>
+            <div class="form-group">
+              <label for="email">Votre email *</label>
+              <input type="email" id="email" required>
+            </div>
+            <div class="form-group">
+              <label for="sujet">Sujet</label>
+              <select id="sujet">
+                <option value="">Sélectionnez un sujet</option>
+                <option value="question">Question générale</option>
+                <option value="bug">Signaler un problème</option>
+                <option value="suggestion">Suggestion d'amélioration</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="message">Votre message *</label>
+              <textarea id="message" rows="5" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Envoyer le message</button>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <div class="footer-bottom">
+        <p>© 2026 Edami - Plateforme d'orientation pour l'enseignement supérieur au Gabon.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Gestion simple des formulaires
+    document.getElementById('contact-form')?.addEventListener('submit', function(e) {
+      e.preventDefault();
+      alert('Merci pour votre message ! Nous vous répondrons dans les plus brefs délais.');
+      this.reset();
+    });
+    
+    document.getElementById('referencement-form')?.addEventListener('submit', function(e) {
+      e.preventDefault();
+      alert('Merci pour votre demande de référencement ! Notre équipe vous contactera sous 48h.');
+      this.reset();
+    });
+  </script>
+  <script src="js/data-loader.js"></script>
+  <script src="js/favorites.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
