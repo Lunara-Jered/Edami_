@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Edami - Trouve la formation supérieure qui te correspond au Gabon. Compare les universités, grandes écoles et instituts gabonais.">
+  <title>Edami - Orientation et information sur l'enseignement supérieur au Gabon</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header>
+    <div class="container">
+      <a href="index.html" class="logo" aria-label="Edami - Accueil">
+        <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+          <rect width="40" height="40" rx="8" fill="#1a3c6e"/>
+          <path d="M8 28 L20 12 L32 28" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M14 28 L20 20 L26 28" stroke="#00a473" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span>Edami</span>
+      </a>
+      <nav>
+        <ul class="nav-links" id="nav-links">
+          <li><a href="index.html" class="active">Accueil</a></li>
+          <li><a href="#explorer">Explorer</a></li>
+          <li><a href="a-propos.html">À propos</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </nav>
+      <div class="nav-actions">
+        <button class="icon-btn search-trigger" aria-label="Rechercher" onclick="document.getElementById('search-input').focus()">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        </button>
+        <a href="sauvegarde.html" class="icon-btn" aria-label="Favoris sauvegardés">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          <span class="badge fav-badge">0</span>
+        </a>
+        <button class="hamburger" id="hamburger-btn" aria-label="Menu">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- Section Héro -->
+    <section class="hero">
+      <div class="container">
+        <h1>Trouve la formation qui te correspond au Gabon</h1>
+        <p>Explore, compare et choisis parmi les universités, grandes écoles et instituts supérieurs du Gabon.</p>
+        <div class="search-bar">
+          <input type="text" id="search-input" placeholder="Recherche une école, une filière, une ville...">
+          <button aria-label="Rechercher">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Pourquoi Edami ? -->
+    <section class="section" id="explorer">
+      <div class="container">
+        <h2 class="section-title">Pourquoi Edami ?</h2>
+        <p class="section-subtitle">La première plateforme gabonaise qui centralise l'information sur l'enseignement supérieur.</p>
+        <div class="features-grid">
+          <div class="feature-card">
+            <div class="feature-icon">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+            </div>
+            <h3>Centralise</h3>
+            <p>Toutes les formations du supérieur gabonais réunies en un seul endroit, à jour et vérifiées.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            </div>
+            <h3>Compare</h3>
+            <p>Compare facilement les filières, les tarifs et les dates de concours pour faire le meilleur choix.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            </div>
+            <h3>Choisis</h3>
+            <p>Construis ton projet d'orientation en toute confiance avec des données fiables et transparentes.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Filtres et Résultats -->
+    <section class="section" style="background: var(--white);">
+      <div class="container">
+        <h2 class="section-title" id="result-count">3 école(s) trouvée(s)</h2>
+        
+        <div class="filters-bar">
+          <div class="filter-group">
+            <label for="filter-type">Type d'établissement</label>
+            <select id="filter-type">
+              <option value="">Tous</option>
+              <option value="Université publique">Université publique</option>
+              <option value="Grande école publique">Grande école publique</option>
+              <option value="École spécialisée publique">École spécialisée publique</option>
+            </select>
+          </div>
+          <div class="filter-group">
+            <label for="filter-ville">Ville</label>
+            <select id="filter-ville">
+              <option value="">Toutes</option>
+              <option value="Libreville">Libreville</option>
+              <option value="Franceville">Franceville</option>
+            </select>
+          </div>
+          <div class="filter-group">
+            <label for="filter-diplome">Diplôme visé</label>
+            <select id="filter-diplome">
+              <option value="">Tous</option>
+              <option value="BTS">BTS</option>
+              <option value="Licence">Licence</option>
+              <option value="Licence Professionnelle">Licence Pro</option>
+              <option value="Master">Master</option>
+              <option value="Doctorat">Doctorat</option>
+              <option value="CAPES">CAPES</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="ecoles-grid" id="ecoles-grid">
+          <!-- Chargement dynamique -->
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <h4>Edami</h4>
+          <ul>
+            <li><a href="a-propos.html">À propos</a></li>
+            <li><a href="contact.html">Contact</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Explorer</h4>
+          <ul>
+            <li><a href="index.html#explorer">Toutes les écoles</a></li>
+            <li><a href="sauvegarde.html">Mes favoris</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Ressources</h4>
+          <ul>
+            <li><a href="contact.html#faq">FAQ</a></li>
+            <li><a href="contact.html#referencement">Référencer une école</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Légal</h4>
+          <ul>
+            <li><a href="#">Mentions légales</a></li>
+            <li><a href="#">Protection des données</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2026 Edami - Plateforme d'orientation pour l'enseignement supérieur au Gabon.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/data-loader.js"></script>
+  <script src="js/favorites.js"></script>
+  <script src="js/search-filters.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
